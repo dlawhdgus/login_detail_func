@@ -23,4 +23,5 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(config.port, () => {
     console.log("http://localhost:3002")
+    
 })
