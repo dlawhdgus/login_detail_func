@@ -21,3 +21,7 @@ exports.REG_LOGIC = async (req, res) => {
         res.write(`<script>alert('id가 중복되었습니다');location.href="https://jh.jp.ngrok.io/basic/reg";</script>`,'utf8')
     }
 }
+
+exports.LOGIN_PAGE = (req, res) => {
+    res.render('login')
+}
