@@ -12,3 +12,18 @@ exports.extra_INSERT_USER_DATA = async (id, email, phone_number, address) => {
         if (e) throw e
     }
 }
+
+exports.extra_GET_USER_DATA = async (id) => {
+    try {
+        const sql = `SELECT * FROM ${table_name}`
+        const result = new Promise((resolve, reject) => {
+            mysql.query(sql, (e, r) => {
+                if(e) reject(e)
+                else resolve(r)
+            })
+        })
+        return result
+    } catch (e) {
+
+    }
+}

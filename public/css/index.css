@@ -1,6 +1,12 @@
 #title {
     text-align: center;
 }
+
 #login_form {
     text-align: right;
+}
+
+#btn {
+    text-decoration: none;
+    color: black;
 }

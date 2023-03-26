@@ -3,5 +3,13 @@
 }
 
 #reg_form {
-    padding-left: 700px;
+    text-align: center;
+}
+
+#btn {
+    width: 148px;
+}
+
+input {
+    margin-bottom: 3px;
 }
