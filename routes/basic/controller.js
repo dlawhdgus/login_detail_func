@@ -86,6 +86,7 @@ exports.LOGIN_LOGIC = async (req, res) => {
     }
 }
 
-exports.LOGOUT_LOGIC = async () => {
-    
+exports.LOGOUT_LOGIC = async (req,res) => {
+    req.session.destroy(() => { })
+    res.redirect('index')
 }
