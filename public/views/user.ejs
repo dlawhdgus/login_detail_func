@@ -9,10 +9,18 @@
 </head>
 <body>
     <h2 id="title">MYSQL TABLE JOIN PRACTICE</h2>
+    <form id="logout_action" action="/basiclogout_logic" method="post"></form>
+    <div id="logout_form"><a onclick="document.getElementById('logout_action').submit();">로그아웃</a><br></div>
+
     아이디 : <%= data.extra.id %><br>
     이름 : <%= data.name %><br>
     이메일 : <%= data.extra.email %><br>
     전화번호 : <%= data.extra.phone_num %><br>
-    주소 : <%= data.extra.address %><br>
+    주소 : <%= data.extra.address %><br><br>
+    <form id="go_to_index" action="/basic/index" method="get"></form>
+    <form id="update_user_data" action="/basic/update_logic" method="post">
+
+    </form>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | 수정
 </body>
 </html>
