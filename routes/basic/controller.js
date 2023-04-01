@@ -131,3 +131,16 @@ exports.UPDATE_LOGIC = async (req, res) => {
     userdata.extra = more_userdata[0]
     res.render('user', { data: userdata })
 }
+
+exports.DELETE_LOGIC = async (req, res) => {
+    const { id } = req.body
+    
+    const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
+    const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
+
+    const basic_delete_user = await basic_mysql_callback.basic_DELETE_USER(baisc_user_idx[0].idx)
+    const extra_delete_user = await extra_mysql_callback.extra_DELETE_USER(extra_user_idx[0].idx)
+
+    req.session.destroy(() => { })
+    res.redirect('index')   
+}

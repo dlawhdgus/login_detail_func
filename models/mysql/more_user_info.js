@@ -55,3 +55,14 @@ exports.extra_UPDATE_USER_DATA = async (idx, email, phone_num, address) => {
         if (e) throw e
     }
 }
+
+exports.extra_DELETE_USER = async (idx) => {
+    try {
+        const sql = `DELETE FROM ${table_name} WHERE idx='${idx}'`
+        mysql.query(sql, (e) => {
+            if (e) throw e
+        })
+    } catch (e) {
+        if (e) throw e
+    }
+}

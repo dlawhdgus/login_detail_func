@@ -68,3 +68,14 @@ exports.basic_UDATE_USER_NAME = async (idx, name) => {
         if (e) throw e
     }
 }
+
+exports.basic_DELETE_USER = async (idx) => {
+    try {
+        const sql = `DELETE FROM ${table_name} WHERE idx='${idx}'`
+        mysql.query(sql, (e) => {
+            if(e) throw e
+        })
+    } catch (e) {
+        if (e) throw e
+    }
+}

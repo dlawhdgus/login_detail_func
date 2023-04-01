@@ -1,7 +1,8 @@
 const router = require('express').Router()
 
 const paths = [
-    '/basic'
+    '/basic',
+    '/admin'
 ]
 
 paths.forEach(path => router.use(path, require(`.${path}`)))
