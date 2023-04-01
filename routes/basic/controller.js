@@ -86,7 +86,23 @@ exports.LOGIN_LOGIC = async (req, res) => {
     }
 }
 
-exports.LOGOUT_LOGIC = async (req,res) => {
+exports.LOGOUT_LOGIC = async (req, res) => {
     req.session.destroy(() => { })
     res.redirect('index')
+}
+
+exports.UPDATE_PAGE = async (req, res) => {
+    const { userdata } = req.session
+    const user_data = {}
+    const basic_userdata = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
+    const extra_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
+
+    user_data.name = basic_userdata[0].name
+    user_data.extra = extra_userdata[0]
+    
+    res.render('user_edit', { data : user_data})
+}
+
+exports.UPDATE_LOGIC = async (req, res) => {
+
 }

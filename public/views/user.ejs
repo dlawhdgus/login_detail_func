@@ -1,26 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head style="padding: 0; margin: 0;">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>user-Page</title>
     <link rel="stylesheet" type="text/css" href="../css/user.css" />
 </head>
-<body>
-    <h2 id="title">MYSQL TABLE JOIN PRACTICE</h2>
+<body style="padding: 0; margin: 0;">
+    <header><h2 id="title">MYSQL TABLE JOIN PRACTICE</h2></header>
     <form id="logout_action" action="/basic/logout_logic" method="post"></form>
     <div id="logout_form"><a onclick="document.getElementById('logout_action').submit();">로그아웃</a><br></div>
-
-    아이디 : <%= data.extra.id %><br>
-    이름 : <%= data.name %><br>
-    이메일 : <%= data.extra.email %><br>
-    전화번호 : <%= data.extra.phone_num %><br>
-    주소 : <%= data.extra.address %><br><br>
-    <form id="go_to_index" action="/basic/index" method="get"></form>
-    <form id="update_user_data" action="/basic/update_logic" method="post">
-
-    </form>
-    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | 수정
+    <nav>
+        <ul>
+            <li>아이디</li>
+            <li>이름</li>
+            <li>이메일</li>
+            <li>전화번호</li>
+            <li>주소</li>
+        </ul>
+    </nav>
+    <section>
+        <article>
+            <ul>
+                <li><%= data.extra.id %></li>
+                <li><%= data.name %></li>
+                <li><%= data.extra.email %></li>
+                <li><%= data.extra.phone_num %></li>
+                <li><%= data.extra.address %></li>
+                <form id="go_to_index" action="/basic/index" method="get"></form>
+                <form id="update_user_data" action="/basic/update" method="get"></form> 
+                <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a>
+            </ul>
+        </article>
+    </section>
 </body>
 </html>

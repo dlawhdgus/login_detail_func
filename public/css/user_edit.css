@@ -1,0 +1,27 @@
+#title {
+    text-align: center;
+}
+
+nav {
+    width: 8%;
+    height: 100%;
+    vertical-align: top;
+    display: inline-block;
+    background-color: #E2E2E2;
+}
+
+li {
+    margin-bottom: 5px;
+    list-style: none;
+}
+
+main {
+    display: inline-block;
+    width: 80%;
+}
+
+#article_li {
+    margin-bottom: 2px;
+}
+
+/* https://www.zerocho.com/category/HTML&DOM/post/5821b15f577d375e5c73bbc5 */

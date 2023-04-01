@@ -9,3 +9,21 @@ a:hover {
 #logout_form {
     text-align: right;
 }
+
+li {
+    list-style: none;
+}
+
+nav {
+    vertical-align: top;
+    background-color: #E2E2E2;
+    display: inline-block;
+    width: 8%;
+    height: 100%;
+}
+
+section{
+    width: 92%;
+    height: 100%;
+    display: inline-block;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user-Page</title>
+    <link rel="stylesheet" type="text/css" href="../css/user_edit.css" />
+</head>
+
+<body>
+    <header>
+        <h2 id="title">MYSQL TABLE JOIN PRACTICE</h2>
+    </header>
+    <nav>
+        <ul>
+            <li>이름</li>
+            <li>아이디</li>
+            <li>이메일</li>
+            <li>전화번호</li>
+            <li>주소</li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <article>
+                <ul id="article">
+                    <li id="article_li"><input type="text" value="<%= data.extra.id %>"></li>
+                    <li id="article_li"><input type="text" value="<%= data.name %>"></li>
+                    <li id="article_li"><input type="text" value="<%= data.extra.email %>"></li>
+                    <li id="article_li"><input type="text" value="<%= data.extra.phone_num %>"></li>
+                    <li id="article_li"><input type="text" value="<%= data.extra.address %>"></li>
+                    뒤로가기
+                </ul>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
