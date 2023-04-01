@@ -24,4 +24,7 @@ main {
     margin-bottom: 2px;
 }
 
+a:hover {
+    cursor: pointer;
+}
 /* https://www.zerocho.com/category/HTML&DOM/post/5821b15f577d375e5c73bbc5 */

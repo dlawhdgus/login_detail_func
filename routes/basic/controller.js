@@ -54,9 +54,19 @@ exports.REG_LOGIC = async (req, res) => {
     }
 }
 
-exports.LOGIN_PAGE = (req, res) => {
+exports.LOGIN_PAGE = async (req, res) => {
     try {
-        res.render('login')
+        const { userdata } = req.session
+        if (userdata) {
+            const check_id = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
+            const more_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
+            const user_data = {}
+            user_data.name = check_id[0].name
+            user_data.extra = more_userdata[0]
+            res.render('user', { data: user_data })
+        } else {
+            res.render('login')
+        }
     } catch (e) {
         if (e) throw e
     }
@@ -67,6 +77,7 @@ exports.LOGIN_LOGIC = async (req, res) => {
         const { id, pw } = req.body
         const check_id = await basic_mysql_callback.basic_GET_USER_DATA(id)
         const userdata = {}
+
         if (check_id[0] !== undefined) {
             const decoding_pw = crypto.decoding(check_id[0].pw)
             if (pw === decoding_pw) {
@@ -99,10 +110,24 @@ exports.UPDATE_PAGE = async (req, res) => {
 
     user_data.name = basic_userdata[0].name
     user_data.extra = extra_userdata[0]
-    
-    res.render('user_edit', { data : user_data})
+
+    res.render('user_edit', { data: user_data })
 }
 
 exports.UPDATE_LOGIC = async (req, res) => {
+    const { id, name, email, phone_num, address } = req.body
 
+    const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
+    const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
+
+    const update_user_name = await basic_mysql_callback.basic_UDATE_USER_NAME(baisc_user_idx[0].idx, name)
+    const update_user_data = await extra_mysql_callback.extra_UPDATE_USER_DATA(extra_user_idx[0].idx, email, phone_num, address)
+    const userdata = {}
+
+    const user_name = await basic_mysql_callback.basic_GET_USER_DATA(id)
+    const more_userdata = await extra_mysql_callback.extra_GET_USER_DATA(id)
+
+    userdata.name = user_name[0].name
+    userdata.extra = more_userdata[0]
+    res.render('user', { data: userdata })
 }
