@@ -87,7 +87,7 @@ exports.LOGIN_LOGIC = async (req, res) => {
                 userdata.extra = more_userdata[0]
                 res.render('user', { data: userdata })
             } else {
-                res.write(`<script>alert('잘못된 비밀번호'); location.href="https://jh.jp.ngrok.io/basic/login";</script>`, 'utf-8')
+                res.write(`<script>alert('잘못된 비밀번호'); history.back();</script>`, 'utf-8')
             }
         } else {
             res.write(`<script>alert('잘못된 아이디'); location.href="https://jh.jp.ngrok.io/basic/login";</script>`, 'utf-8')
@@ -104,14 +104,18 @@ exports.LOGOUT_LOGIC = async (req, res) => {
 
 exports.UPDATE_PAGE = async (req, res) => {
     const { userdata } = req.session
-    const user_data = {}
-    const basic_userdata = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
-    const extra_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
-
-    user_data.name = basic_userdata[0].name
-    user_data.extra = extra_userdata[0]
-
-    res.render('user_edit', { data: user_data })
+    if(userdata) {
+        const user_data = {}
+        const basic_userdata = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
+        const extra_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
+    
+        user_data.name = basic_userdata[0].name
+        user_data.extra = extra_userdata[0]
+    
+        res.render('user_edit', { data: user_data })
+    } else {
+        res.write(`<script>alert('로그인 후 이용해 주세요'); location.href="https://jh.jp.ngrok.io/basic/login";</script>`, 'utf-8')
+    }
 }
 
 exports.UPDATE_LOGIC = async (req, res) => {

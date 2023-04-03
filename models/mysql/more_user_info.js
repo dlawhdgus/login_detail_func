@@ -6,7 +6,7 @@ exports.extra_INSERT_USER_DATA = async (id, email, phone_number, address) => {
     try {
         if (!phone_number) phone_number = ''
         if (!address) address = ''
-        const sql = `INSERT INTO ${table_name} (id, email, phone_num, address, reg_date, flag) VALUES ('${id}','${email}', '${phone_number}', '${address}', '${now_date}', 'a')`
+        const sql = `INSERT INTO ${table_name} (id, email, phone_num, address, reg_date, flag) VALUES ('${id}','${email}', '${phone_number}', '${address}', '${now_date}', 'u')`
         mysql.query(sql, (e) => {
             if (e) throw e
         })
