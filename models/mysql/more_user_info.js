@@ -66,3 +66,18 @@ exports.extra_DELETE_USER = async (idx) => {
         if (e) throw e
     }
 }
+
+exports.extra_GET_USER_FLAG = async (id) => {
+    try {
+        const sql = `SELECT flag FROM ${table_name} WHERE id='${id}'`
+        const result = new Promise((resolve, reject) => {
+            mysql.query(sql, (e, r) => {
+                if (e) reject(e)
+                else resolve(r)
+            })
+        })
+        return result
+    } catch (e) {
+        if (e) throw e
+    }
+}
