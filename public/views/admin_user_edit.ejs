@@ -26,17 +26,18 @@
         <section>
             <article>
                 <ul id="article">
-                    <form action="/basic/update_logic" method="post">
+                    <form id="edit" action="/admin/update_logic" method="post">
                         <li id="article_li"><%= data.extra.id %></li>
                         <li id="article_li"><input type="hidden" value="<%= data.extra.id %>" name="id"></li>
                         <li id="article_li"><input type="text" value="<%= data.name %>" name="name"></li>
                         <li id="article_li"><input type="text" value="<%= data.extra.email %>" name="email"></li>
                         <li id="article_li"><input type="text" value="<%= data.extra.phone_num %>" name="phone_num"></li>
                         <li id="article_li"><input type="text" value="<%= data.extra.address %>" name="address"></li><br>
-                        <button type="submit">수정</button>
+                        <form id="delete_user" action="" method="post">
+                            <input
+                        </form>
+                        <a onclick="document.getElementById('edit').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a>
                     </form>
-                    <form id="back" action="/basic/login" method="get"></form>
-                    <a onclick="document.getElementById('back').submit();">뒤로가기</a>
                 </ul>
             </article>
         </section>

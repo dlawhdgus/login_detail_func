@@ -23,19 +23,19 @@
     <section>
         <article>
             <ul>
-                <li><%= data.extra.id %></li>
-                <li><%= data.name %></li>
-                <li><%= data.extra.email %></li>
-                <li><%= data.extra.phone_num %></li>
-                <li><%= data.extra.address %></li><br>
-                <form id="go_to_index" action="/basic/index" method="get"></form>
-                <form id="update_user_data" action="/basic/update" method="get"></form> 
-                <form action="/basic/delete_logic" method="post" id="delete_user">
-                    <input type="hidden" value="<%= data.extra.id %>" name="id">
-                </form>
-                <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="document.getElementById('delete_user').submit();">회원탈퇴</a>
+                <li>: &nbsp;&nbsp;<%= data.extra.id %></li>
+                <li>: &nbsp;&nbsp;<%= data.name %></li>
+                <li>: &nbsp;&nbsp;<%= data.extra.email %></li>
+                <li>: &nbsp;&nbsp;<%= data.extra.phone_num %></li>
+                <li>: &nbsp;&nbsp;<%= data.extra.address %></li><br>
             </ul>
         </article>
     </section>
+    <form id="go_to_index" action="/basic/index" method="get"></form>
+    <form id="update_user_data" action="/basic/update" method="get"></form> 
+    <form action="/basic/delete_logic" method="post" id="delete_user">
+        <input type="hidden" value="<%= data.extra.id %>" name="id">
+    </form>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="document.getElementById('delete_user').submit();">회원탈퇴</a>
 </body>
 </html>

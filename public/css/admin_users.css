@@ -1,0 +1,11 @@
+#title {
+    text-align: center;
+}
+
+#logout_form {
+    text-align: right;
+}
+
+a:hover {
+    cursor: pointer;
+}

@@ -21,13 +21,19 @@ exports.REG_PAGE = (req, res) => {
 
 exports.REG_LOGIC = async (req, res) => {
     try {
-        const { id, pw, name, email, phone_number } = req.body
-        const { address_number, roadAddress, jibunAddress, detailAddress, extraAddress } = req.body
-        const address = `${address_number} ${roadAddress} ${jibunAddress} ${detailAddress} ${extraAddress}`
+        const { id, pw, name } = req.body
+        let { email, phone_number } = req.body
+        let { address_number, roadAddress, jibunAddress, detailAddress, extraAddress } = req.body
+        let address = `${address_number}${roadAddress}${jibunAddress}${detailAddress}${extraAddress}`
+        
+        if(!email) email = ''
+        if(!phone_number) phone_number = ''
+        if(address === 'undefined') address = ''
+        
         const encoding_pw = crypto.encodig(pw)
         const check_id = await basic_mysql_callback.basic_GET_USER_ID(id)
         const p_num_reg = /^(\d{2,3})(\d{3,4})(\d{4})$/
-
+        
         if (!id) res.write(`<script>alert('아이디를 입력해주세요');history.back();</script>`, 'utf-8')
         if (CheckArr.idEmptyArray(check_id)) {
             if (!pw) res.write(`<script>alert('비밀번호를 입력해주세요');history.back();</script>`, 'utf-8')

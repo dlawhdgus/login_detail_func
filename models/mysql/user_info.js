@@ -1,5 +1,6 @@
 const mysql = require('../../dbs/mysql')
 const table_name = "user_info"
+const extra_table = "more_user_info"
 const now_date = Date()
 
 exports.basic_GET_USER_ID = async (id) => {
@@ -73,8 +74,38 @@ exports.basic_DELETE_USER = async (idx) => {
     try {
         const sql = `DELETE FROM ${table_name} WHERE idx='${idx}'`
         mysql.query(sql, (e) => {
-            if(e) throw e
+            if (e) throw e
         })
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.basic_GET_ALL_USER_DATA = async () => {
+    try {
+        const sql = `SELECT name FROM ${table_name}`
+        const result = new Promise((resolve, reject) => {
+            mysql.query(sql, (e, r) => {
+                if (e) reject(e)
+                else resolve(r)
+            })
+        })
+        return result
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.join_GET_USER_DATA = async () => {
+    try {
+        const sql = `SELECT * FROM ${table_name} INNER JOIN ${extra_table} ON ${table_name}.id = ${extra_table}.id WHERE flag = 'u'`
+        const result = new Promise((resolve, reject) => {
+            mysql.query(sql, (e, r) => {
+                if (e) reject(e)
+                else resolve(r)
+            })
+        })
+        return result
     } catch (e) {
         if (e) throw e
     }
