@@ -33,7 +33,7 @@ exports.REG_LOGIC = async (req, res) => {
         const encoding_pw = crypto.encodig(pw)
         const check_id = await basic_mysql_callback.basic_GET_USER_ID(id)
         const p_num_reg = /^(\d{2,3})(\d{3,4})(\d{4})$/
-        
+
         if (!id) res.write(`<script>alert('아이디를 입력해주세요');history.back();</script>`, 'utf-8')
         if (CheckArr.idEmptyArray(check_id)) {
             if (!pw) res.write(`<script>alert('비밀번호를 입력해주세요');history.back();</script>`, 'utf-8')
@@ -104,53 +104,69 @@ exports.LOGIN_LOGIC = async (req, res) => {
 }
 
 exports.LOGOUT_LOGIC = async (req, res) => {
-    req.session.destroy(() => { })
-    res.redirect('index')
+    try {
+        req.session.destroy(() => { })
+        res.redirect('index')
+    } catch (e) {
+        if (e) throw e
+    }
 }
 
 exports.UPDATE_PAGE = async (req, res) => {
-    const { userdata } = req.session
-    if(userdata) {
-        const user_data = {}
-        const basic_userdata = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
-        const extra_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
-    
-        user_data.name = basic_userdata[0].name
-        user_data.extra = extra_userdata[0]
-    
-        res.render('user_edit', { data: user_data })
-    } else {
-        res.write(`<script>alert('로그인 후 이용해 주세요'); location.href="https://jh.jp.ngrok.io/basic/login";</script>`, 'utf-8')
+    try {
+        const { userdata } = req.session
+        if(userdata) {
+            const user_data = {}
+            const basic_userdata = await basic_mysql_callback.basic_GET_USER_DATA(userdata)
+            const extra_userdata = await extra_mysql_callback.extra_GET_USER_DATA(userdata)
+        
+            user_data.name = basic_userdata[0].name
+            user_data.extra = extra_userdata[0]
+        
+            res.render('user_edit', { data: user_data })
+        } else {
+            res.write(`<script>alert('로그인 후 이용해 주세요'); location.href="https://jh.jp.ngrok.io/basic/login";</script>`, 'utf-8')
+        }
+    } catch (e) {
+        if (e) throw e
     }
 }
 
 exports.UPDATE_LOGIC = async (req, res) => {
-    const { id, name, email, phone_num, address } = req.body
+    try {
+        const { id, name, email, phone_num, address } = req.body
 
-    const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
-    const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
-
-    const update_user_name = await basic_mysql_callback.basic_UDATE_USER_NAME(baisc_user_idx[0].idx, name)
-    const update_user_data = await extra_mysql_callback.extra_UPDATE_USER_DATA(extra_user_idx[0].idx, email, phone_num, address)
-    const userdata = {}
-
-    const user_name = await basic_mysql_callback.basic_GET_USER_DATA(id)
-    const more_userdata = await extra_mysql_callback.extra_GET_USER_DATA(id)
-
-    userdata.name = user_name[0].name
-    userdata.extra = more_userdata[0]
-    res.render('user', { data: userdata })
+        const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
+        const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
+    
+        const update_user_name = await basic_mysql_callback.basic_UDATE_USER_NAME(baisc_user_idx[0].idx, name)
+        const update_user_data = await extra_mysql_callback.extra_UPDATE_USER_DATA(extra_user_idx[0].idx, email, phone_num, address)
+        const userdata = {}
+    
+        const user_name = await basic_mysql_callback.basic_GET_USER_DATA(id)
+        const more_userdata = await extra_mysql_callback.extra_GET_USER_DATA(id)
+    
+        userdata.name = user_name[0].name
+        userdata.extra = more_userdata[0]
+        res.render('user', { data: userdata })
+    } catch (e) {
+        if (e) throw e
+    }
 }
 
 exports.DELETE_LOGIC = async (req, res) => {
-    const { id } = req.body
+    try {
+        const { id } = req.body
     
-    const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
-    const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
-
-    const basic_delete_user = await basic_mysql_callback.basic_DELETE_USER(baisc_user_idx[0].idx)
-    const extra_delete_user = await extra_mysql_callback.extra_DELETE_USER(extra_user_idx[0].idx)
-
-    req.session.destroy(() => { })
-    res.redirect('index')   
+        const baisc_user_idx = await basic_mysql_callback.basic_GET_USER_IDX(id)
+        const extra_user_idx = await extra_mysql_callback.extra_GET_USER_IDX(id)
+    
+        const basic_delete_user = await basic_mysql_callback.basic_DELETE_USER(baisc_user_idx[0].idx)
+        const extra_delete_user = await extra_mysql_callback.extra_DELETE_USER(extra_user_idx[0].idx)
+    
+        req.session.destroy(() => { })
+        res.redirect('index')   
+    } catch (e) {
+        if (e) throw e 
+    }
 }

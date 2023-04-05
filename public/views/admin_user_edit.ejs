@@ -26,6 +26,7 @@
         <section>
             <article>
                 <ul id="article">
+                    <form id="delete_user" action="/admin/delete_logic" method="post"><input type="hidden" value="<%= data.extra.id %>" name="id"></form>
                     <form id="edit" action="/admin/update_logic" method="post">
                         <li id="article_li"><%= data.extra.id %></li>
                         <li id="article_li"><input type="hidden" value="<%= data.extra.id %>" name="id"></li>
@@ -33,11 +34,8 @@
                         <li id="article_li"><input type="text" value="<%= data.extra.email %>" name="email"></li>
                         <li id="article_li"><input type="text" value="<%= data.extra.phone_num %>" name="phone_num"></li>
                         <li id="article_li"><input type="text" value="<%= data.extra.address %>" name="address"></li><br>
-                        <form id="delete_user" action="" method="post">
-                            <input
-                        </form>
-                        <a onclick="document.getElementById('edit').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a>
                     </form>
+                    <a onclick="document.getElementById('edit').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a> | <a onclick="document.getElementById('delete_user').submit();">삭제</a>
                 </ul>
             </article>
         </section>
