@@ -4,7 +4,6 @@ const now_date = Date()
 
 exports.extra_INSERT_USER_DATA = async (id, email, phone_number, address) => {
     try {
-        // console.log(`email : ${email} p : ${phone_number}  a : ${address}`)
         const sql = `INSERT INTO ${table_name} (id, email, phone_num, address, reg_date, flag) VALUES ('${id}','${email}', '${phone_number}', '${address}', '${now_date}', 'u')`
         mysql.query(sql, (e) => {
             if (e) throw e

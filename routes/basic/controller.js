@@ -23,9 +23,15 @@ exports.REG_LOGIC = async (req, res) => {
     try {
         const { id, pw, name } = req.body
         let { email, phone_number } = req.body
+
         let { address_number, roadAddress, jibunAddress, detailAddress, extraAddress } = req.body
-        let address = `${address_number}${roadAddress}${jibunAddress}${detailAddress}${extraAddress}`
-        
+        const a = address_number ?? ''
+        const r = roadAddress ?? ''
+        const j = jibunAddress ?? ''
+        const d = detailAddress ?? ''
+        const e = extraAddress ?? ''
+        let address = `${a}${r}${j}${d}${e}`
+
         if(!email) email = ''
         if(!phone_number) phone_number = ''
         if(address === 'undefined') address = ''
