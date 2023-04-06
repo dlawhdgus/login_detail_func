@@ -9,3 +9,12 @@
 a:hover {
     cursor: pointer;
 }
+
+#pagination_form {
+    text-align: center;
+}
+
+#page {
+    text-decoration: none;
+    color: black;
+}

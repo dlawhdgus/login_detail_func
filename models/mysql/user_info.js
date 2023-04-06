@@ -96,9 +96,24 @@ exports.basic_GET_ALL_USER_DATA = async () => {
     }
 }
 
-exports.join_GET_USER_DATA = async () => {
+exports.join_GET_USER_DATA = async (page, pageSize) => {
     try {
-        const sql = `SELECT * FROM ${table_name} INNER JOIN ${extra_table} ON ${table_name}.id = ${extra_table}.id WHERE flag = 'u'`
+        const sql = `SELECT * FROM ${table_name} INNER JOIN ${extra_table} ON ${table_name}.id = ${extra_table}.id WHERE flag = 'u' LIMIT ${page}, ${pageSize}`
+        const result = new Promise((resolve, reject) => {
+            mysql.query(sql, (e, r) => {
+                if (e) reject(e)
+                else resolve(r)
+            })
+        })
+        return result
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.GET_USERS_COUNT = async () => {
+    try {
+        const sql = `SELECT COUNT(*) as cnt FROM ${table_name}`
         const result = new Promise((resolve, reject) => {
             mysql.query(sql, (e, r) => {
                 if (e) reject(e)

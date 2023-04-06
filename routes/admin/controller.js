@@ -3,15 +3,23 @@ const extra_mysql_callback = require('../../models/mysql/more_user_info')
 const CheckArr = require('../../modules/array')
 const crypto = require('../../modules/crypto')
 
-exports.LOGIN_LOGIC = async (req, res) => {
+exports.USERS_PAGE = async (req, res) => {
     try {
         const { userdata } = req.session
         const user_flag_filter = await extra_mysql_callback.extra_GET_USER_FLAG(userdata)
-
+        const users_count = await basic_mysql_callback.GET_USERS_COUNT()
+        const cnt = Math.ceil((users_count[0].cnt - 1) / 5)
         if (userdata) {
             if (user_flag_filter[0].flag === 'a') {
-                const users_all_data = await basic_mysql_callback.join_GET_USER_DATA() //table join
-                res.render('admin_users', { data: users_all_data })
+                let { page, pageSize } = req.query
+                page = parseInt(page)
+                pageSize = parseInt(pageSize)
+                const StartPage = (page - 1) * pageSize
+                const users_all_data = await basic_mysql_callback.join_GET_USER_DATA(StartPage,pageSize) //table join
+                res.render('admin_users', { 
+                    data : users_all_data,
+                    page : cnt
+                })
             } else {
                 res.write(`<script>alert('관리자만 접근 가능합니다'); location.href="https://jh.jp.ngrok.io/basic/index";</script>`, 'utf-8')
             }
