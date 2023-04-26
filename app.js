@@ -1,10 +1,11 @@
-const express = require('express')
-const app = express()
-const config = require('./config.json')
-const routes = require('./routes')
-const bodyParser = require('body-parser')
-const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+const express             = require('express')
+const app                 = express()
+const config              = require('./config.json')
+const routes              = require('./routes')
+const bodyParser          = require('body-parser')
+const session             = require('express-session')
+const FileStore           = require('session-file-store')(session)
+const { mongodb_connect } = require('./models/mongodb_connect')
 
 app.use(session({
     secret: 'luwygdfo',
@@ -25,5 +26,6 @@ app.set('views', './public/views')
 app.set('view engine', 'ejs')
 
 app.listen(config.port, () => {
+    mongodb_connect
     console.log("https://jh.jp.ngrok.io/basic/index")
 })
