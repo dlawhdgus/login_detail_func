@@ -1,6 +1,7 @@
-const user_info = require('../../models/mongodb_query/user_info')
-const more_user_info = require('../../models/mongodb_query/more_user_info')
+const user_info        = require('../../models/mongodb_query/user_info')
+const more_user_info   = require('../../models/mongodb_query/more_user_info')
 const crypto           = require('../../modules/crypto')
+const ObjectId         = require('mongoose').Types.ObjectId
 
 exports.INDEX_PAGE = (req, res) => {
     try {
@@ -69,6 +70,7 @@ exports.REG_LOGIC = async (req, res) => {
                     res.write(`<script>alert('전화번호 형식이 틀렸습니다.');history.back();</script>`,"utf8")
                 }
             } else {
+                more_userfilter.id = id
                 more_userfilter.email = email
                 more_userfilter.phone_number = phone_number
                 more_userfilter.address = address
@@ -92,6 +94,32 @@ exports.REG_LOGIC = async (req, res) => {
 exports.LOGIN_PAGE = (req, res) => {
     try {
         res.render('login')
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.LOGIN_LOGIC = async (req, res) => {
+    try {
+        const { id, pw } = req.body
+        //순서 -> db에 id있는지 체크, id 없으면 튕겨내기, 있으면 그 대상의 비밀번호 decoding -> 일치하면 session 및 로그인
+        const userdata = await user_info.CHECK_USER_ID(id)
+        if(userdata) {
+            const decode_pw = crypto.decoding(userdata.pw)
+            if(pw === decode_pw) {
+                const user_data = ''// 적기
+
+                const UID = userdata._id.toString()
+                req.session.user_data = UID
+                req.session.save(() => {
+                    res.render('user', { data : user_data})
+                })
+            } else {
+                res.write(`<script>alert('비밀번호가 일치하지 않습니다.');location.href = 'https://jh.jp.ngrok.io/basic/login';</script>`,'utf8')
+            }
+        } else {
+            res.write(`<script>alert('일치하는 아이디가 없습니다.');location.href = 'https://jh.jp.ngrok.io/basic/login';</script>`,'utf8')
+        }
     } catch (e) {
         if (e) throw e
     }
