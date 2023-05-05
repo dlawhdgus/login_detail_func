@@ -9,3 +9,11 @@ exports.INSERT_USER_DATA = async (userfilter) => {
         if (e) throw e
     }
 }
+
+exports.GET_USER_DATA = async (id) => {
+    try {
+        more_user_info.findOne({ id : `'${id}'`})
+    } catch (e) {
+        if (e) throw e
+    }
+}

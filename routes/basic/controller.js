@@ -104,10 +104,17 @@ exports.LOGIN_LOGIC = async (req, res) => {
         const { id, pw } = req.body
         //순서 -> db에 id있는지 체크, id 없으면 튕겨내기, 있으면 그 대상의 비밀번호 decoding -> 일치하면 session 및 로그인
         const userdata = await user_info.CHECK_USER_ID(id)
+        const more_userdata = await more_user_info.GET_USER_DATA(id) 
+        console.log(more_userdata)
         if(userdata) {
             const decode_pw = crypto.decoding(userdata.pw)
             if(pw === decode_pw) {
-                const user_data = ''// 적기
+                const user_data = {}
+                user_data.id = userdata.id
+                user_data.name = userdata.name
+                user_data.email = more_userdata.email
+                user_data.phone_number = more_userdata.phone_number
+                user_data.address = more_userdata.address
 
                 const UID = userdata._id.toString()
                 req.session.user_data = UID
