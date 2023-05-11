@@ -12,7 +12,8 @@ exports.INSERT_USER_DATA = async (userfilter) => {
 
 exports.GET_USER_DATA = async (id) => {
     try {
-        more_user_info.findOne({ id : `'${id}'`})
+        const userdata = await more_user_info.findOne({ id : `${id}`})
+        return userdata
     } catch (e) {
         if (e) throw e
     }
