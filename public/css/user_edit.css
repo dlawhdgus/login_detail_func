@@ -17,8 +17,12 @@ li {
 nav {
     vertical-align: top;
     display: inline-block;
-    width: 30%;
+    width: 10%;
     height: 100%;
+}
+
+.subtitle {
+    margin-bottom: 3px;
 }
 
 section{

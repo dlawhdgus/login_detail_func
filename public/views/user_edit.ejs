@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>user-Page</title>
-    <link rel="stylesheet" type="text/css" href="../css/user.css" />
+    <link rel="stylesheet" type="text/css" href="../css/user_edit.css" />
 </head>
 <body style="padding: 0; margin: 0;">
     <header><h2 id="title">MongoDB - Aggregate Practice</h2></header>
@@ -13,11 +13,11 @@
     <div id="logout_form"><a onclick="document.getElementById('logout_action').submit();">로그아웃</a><br></div>
     <nav>
         <ul>
-            <li id="subtitle">아이디</li>
-            <li id="subtitle">이름</li>
-            <li id="subtitle">이메일</li>
-            <li id="subtitle">전화번호</li>
-            <li id="subtitle">주소</li> <!-- input과 사이즈 맞추기-->
+            <li class="subtitle">아이디</li>
+            <li class="subtitle">이름</li>
+            <li class="subtitle">이메일</li>
+            <li class="subtitle">전화번호</li>
+            <li class="subtitle">주소</li> <!-- input과 사이즈 맞추기-->
         </ul>
     </nav>
     <section>
@@ -33,9 +33,6 @@
     </section>
     <form id="go_to_index" action="/basic/index" method="get"></form>
     <form id="update_user_data" action="/basic/update" method="get"></form> 
-    <form action="/basic/delete_logic" method="post" id="delete_user">
-        <input type="hidden" value="<%= data.id %>" name="id">
-    </form>
-    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="document.getElementById('delete_user').submit();">회원탈퇴</a>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a>
 </body>
 </html>
