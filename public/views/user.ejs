@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head style="padding: 0; margin: 0;">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My-PAGE</title>
+    <title>user-Page</title>
+    <link rel="stylesheet" type="text/css" href="../css/user.css" />
 </head>
-<body>
-    <%- data.id %><br>
-    <%- data.name %><br>
-    <%- data.etc.email %><br>
-    <%- data.etc.phone_number %><br>
-    <%- data.etc.address %><br>
+<body style="padding: 0; margin: 0;">
+    <header><h2 id="title">MongoDB - Aggregate Practice</h2></header>
+    <form id="logout_action" action="/basic/logout_logic" method="post"></form>
+    <div id="logout_form"><a onclick="document.getElementById('logout_action').submit();">로그아웃</a><br></div>
+    <nav>
+        <ul>
+            <li>아이디</li>
+            <li>이름</li>
+            <li>이메일</li>
+            <li>전화번호</li>
+            <li>주소</li>
+        </ul>
+    </nav>
+    <section>
+        <article>
+            <ul>
+                <li>: &nbsp;&nbsp;<%= data.id %></li>
+                <li>: &nbsp;&nbsp;<%= data.name %></li>
+                <li>: &nbsp;&nbsp;<%= data.etc.email %></li>
+                <li>: &nbsp;&nbsp;<%= data.etc.phone_number %></li>
+                <li>: &nbsp;&nbsp;<%= data.etc.address %></li><br>
+            </ul>
+        </article>
+    </section>
+    <form id="go_to_index" action="/basic/index" method="get"></form>
+    <form id="update_user_data" action="/basic/update" method="get"></form> 
+    <form action="/basic/delete_logic" method="post" id="delete_user">
+        <input type="hidden" value="<%= data.id %>" name="id">
+    </form>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="document.getElementById('delete_user').submit();">회원탈퇴</a>
 </body>
 </html>

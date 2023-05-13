@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 const { connection } = require('mongoose')
 const user_info = connection.collection('user_info')
+const ObjectId = require('mongoose').Types.ObjectId
 
 exports.CHECK_USER_ID = async (id) => {
     try {
-        const userdata = await user_info.findOne({id : `${id}`})
+        const userdata = await user_info.findOne({ id: `${id}` })
         return userdata
     } catch (e) {
         if (e) throw e
@@ -19,9 +20,9 @@ exports.INSERT_USER_DATA = async (userfilter) => {
     }
 }
 
-exports.GET_USER_ALL_DATA = async (id) => {
+exports.GET_USER_DATA_ID = async (id) => {
     try {
-        const cursor = user_info.aggregate([
+        const pipeline = [
             {
                 $match: {
                     id: id
@@ -34,7 +35,7 @@ exports.GET_USER_ALL_DATA = async (id) => {
                     pipeline: [                                     // 추가적인 작업
                         {
                             $match: {                               // more_user_info의 $id필드와, from에서 가져온 $id가 맞는지 확인
-                                $expr: { $eq: ["$id", "$$id"] }     
+                                $expr: { $eq: ["$id", "$$id"] }
                             }
                         },
                         {
@@ -60,10 +61,47 @@ exports.GET_USER_ALL_DATA = async (id) => {
                     etc: { $arrayElemAt: ["$more_user_info", 0] }
                 }
             }
-        ])
-        const result = await cursor.toArray()                       // 배열로 전환
-        return result
+        ]
+
+        const result = await user_info.aggregate(pipeline).toArray()                       // 배열로 전환
+        return result[0]
     } catch (e) {
         if (e) throw e
+    }
+}
+
+exports.GET_USER_DATA_OID = async (OID) => {
+    try {
+        const user_data = await user_info.findOne({ _id: ObjectId(OID) }, { _id: 0, id: 1 })
+        console.log(user_data)
+        // const pipeline = [
+        //     {
+        //         $match: {
+        //             id: OID
+        //         }
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: 'more_user_info',
+        //             localField: 'id',
+        //             foreignField: 'user_info_id',
+        //             as: 'more_user_info'
+        //         }
+        //     },
+        //     {
+        //         $project: {
+        //             _id: 0,
+        //             id: 1,
+        //             name: 1,
+        //             email: { $arrayElemAt: ['$more_user_info.email', 0] },
+        //             phone_number: { $arrayElemAt: ['$more_user_info.phone_number', 0] },
+        //             address: { $arrayElemAt: ['$more_user_info.address', 0] }
+        //         }
+        //     }
+        // ];
+        // const cursor = await user_info.aggregate(pipeline).toArray();
+        // return cursor[0];
+    } catch (e) {
+        if (e) throw e;
     }
 }
