@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { connection } = require('mongoose')
 const user_info = connection.collection('user_info')
-const ObjectId = require('mongoose').Types.ObjectId
+const { ObjectId } = require('mongoose').Types
 
 exports.CHECK_USER_ID = async (id) => {
     try {
@@ -72,36 +72,49 @@ exports.GET_USER_DATA_ID = async (id) => {
 
 exports.GET_USER_DATA_OID = async (OID) => {
     try {
-        const user_data = await user_info.findOne({ _id: ObjectId(OID) }, { _id: 0, id: 1 })
-        console.log(user_data)
-        // const pipeline = [
-        //     {
-        //         $match: {
-        //             id: OID
-        //         }
-        //     },
-        //     {
-        //         $lookup: {
-        //             from: 'more_user_info',
-        //             localField: 'id',
-        //             foreignField: 'user_info_id',
-        //             as: 'more_user_info'
-        //         }
-        //     },
-        //     {
-        //         $project: {
-        //             _id: 0,
-        //             id: 1,
-        //             name: 1,
-        //             email: { $arrayElemAt: ['$more_user_info.email', 0] },
-        //             phone_number: { $arrayElemAt: ['$more_user_info.phone_number', 0] },
-        //             address: { $arrayElemAt: ['$more_user_info.address', 0] }
-        //         }
-        //     }
-        // ];
-        // const cursor = await user_info.aggregate(pipeline).toArray();
-        // return cursor[0];
+        const user_id = await user_info.findOne({ _id: new ObjectId(OID) },{projection : { _id : 0, id : 1 }})
+        const pipeline = [
+            {
+                $match: {
+                    id: user_id.id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'more_user_info',
+                    let: { id: "$id" },                             // $id 뱐수 지정, id필드 사용
+                    pipeline: [                                     // 추가적인 작업
+                        {
+                            $match: {                               // more_user_info의 $id필드와, from에서 가져온 $id가 맞는지 확인
+                                $expr: { $eq: ["$id", "$$id"] }
+                            }
+                        },
+                        {
+                            $project: {                             // 출력할 필드 지정
+                                _id: 0,
+                                email: 1,
+                                phone_number: 1,
+                                address: 1,
+                                flag: 1
+                            }
+                        }
+                    ],
+                    as: 'more_user_info'
+                }
+            },
+            {
+                $project: {                                         // 최종 데이터 출력 형태 정의
+                    _id: 0,
+                    id: 1,
+                    name: 1,
+                    reg_date: 1,
+                    etc: { $arrayElemAt: ["$more_user_info", 0] }
+                }
+            }
+        ]
+        const cursor = await user_info.aggregate(pipeline).toArray()
+        return cursor[0]
     } catch (e) {
-        if (e) throw e;
+        if (e) throw e
     }
 }

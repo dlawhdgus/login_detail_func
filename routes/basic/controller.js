@@ -134,11 +134,8 @@ exports.LOGOUT_LOGIC = async (req, res) => {
 exports.UPDATE_PAGE = async (req, res) => {
     try {
         const { UID } = req.session
-        const a = await user_info.GET_USER_DATA_OID(UID)
-        console.log(a)
-
-
-        // res.render('user_edit', { data : })
+        const user_data = await user_info.GET_USER_DATA_OID(UID)
+        res.render('user_edit', { data : user_data })
     } catch (e) {
         if (e) throw e
     }
