@@ -23,16 +23,17 @@
     <section>
         <article>
             <ul>
-                <li>: <input value="<%= data.id %>" name="id"></li>
-                <li>: <input value="<%= data.name %>" name="name"></li>
-                <li>: <input value="<%= data.etc.email %>" name="email"></li>
-                <li>: <input value="<%= data.etc.phone_number %>" name="phone_number"></li>
-                <li>: <input value="<%= data.etc.address %>" name="address"></li><br>
+                <form id="update_user_data" action="/basic/update_logic" method="post">
+                    <li>: <%= data.id %><input type="hidden" value="<%= data.id %>" name="id"></li>
+                    <li>: <input type="text" value="<%= data.name %>" name="name"></li>
+                    <li>: <input type="email" value="<%= data.etc.email %>" name="email"></li>
+                    <li>: <input type="tel" value="<%= data.etc.phone_number %>" name="phone_number"></li>
+                    <li>: <input value="<%= data.etc.address %>" name="address"></li><br>
+                </form>
             </ul>
         </article>
     </section>
     <form id="go_to_index" action="/basic/index" method="get"></form>
-    <form id="update_user_data" action="/basic/update" method="get"></form> 
     <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a>
 </body>
 </html>

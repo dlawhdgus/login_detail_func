@@ -118,3 +118,21 @@ exports.GET_USER_DATA_OID = async (OID) => {
         if (e) throw e
     }
 }
+
+exports.UPDATE_USERDATA = async (id, change_value) => {
+    try {
+        const update_user = await user_info.updateOne({ id : `${id}`}, { $set : change_value})
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.DELETE_USER = async (OID) => {
+    try {
+        const delete_user = await user_info.deleteOne({_id : new ObjectId(OID)})
+        const user_id = await user_info.findOne({_id : new ObjectId(OID)},{projection : {_id : 0, id :1}})
+        return user_id
+    } catch (e) {
+        if (e) throw e
+    }
+}

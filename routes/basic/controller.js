@@ -37,8 +37,8 @@ exports.REG_LOGIC = async (req, res) => {
 
         const p_num_reg = /^(\d{2,3})(\d{3,4})(\d{4})$/
 
-        const userfilter = {}
-        const more_userfilter = {}
+        const change_value = {}
+        const more_change_value = {}
 
         const data = new Date()
 
@@ -46,39 +46,39 @@ exports.REG_LOGIC = async (req, res) => {
         const Check_User = await user_info.CHECK_USER_ID(id)
         if (!Check_User) {
             const encoding_pw = crypto.encoding(pw)
-            userfilter.id = id
-            userfilter.pw = encoding_pw
-            userfilter.name = name
-            userfilter.reg_date = data
+            change_value.id = id
+            change_value.pw = encoding_pw
+            change_value.name = name
+            change_value.reg_date = data
             if (phone_number) {
                 const Check_Phone_number = p_num_reg.test(phone_number)
                 if (Check_Phone_number) {
                     const p_num = phone_number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
 
-                    more_userfilter.id = id
-                    more_userfilter.email = email
-                    more_userfilter.phone_number = p_num
-                    more_userfilter.address = address
-                    more_userfilter.flag = 'u'
-                    more_userfilter.reg_date = data
+                    more_change_value.id = id
+                    more_change_value.email = email
+                    more_change_value.phone_number = p_num
+                    more_change_value.address = address
+                    more_change_value.flag = 'u'
+                    more_change_value.reg_date = data
 
-                    const insert_data = await user_info.INSERT_USER_DATA(userfilter)
-                    const insert_more_data = await more_user_info.INSERT_USER_DATA(more_userfilter)
+                    const insert_data = await user_info.INSERT_USER_DATA(change_value)
+                    const insert_more_data = await more_user_info.INSERT_USER_DATA(more_change_value)
 
                     res.redirect('login')
                 } else {
                     res.write(`<script>alert('전화번호 형식이 틀렸습니다.');history.back();</script>`, "utf8")
                 }
             } else {
-                more_userfilter.id = id
-                more_userfilter.email = email
-                more_userfilter.phone_number = phone_number
-                more_userfilter.address = address
-                more_userfilter.flag = 'a'
-                more_userfilter.reg_date = data
+                more_change_value.id = id
+                more_change_value.email = email
+                more_change_value.phone_number = phone_number
+                more_change_value.address = address
+                more_change_value.flag = 'a'
+                more_change_value.reg_date = data
 
-                const insert_data = await user_info.INSERT_USER_DATA(userfilter)
-                const insert_more_data = await more_user_info.INSERT_USER_DATA(more_userfilter)
+                const insert_data = await user_info.INSERT_USER_DATA(change_value)
+                const insert_more_data = await more_user_info.INSERT_USER_DATA(more_change_value)
 
                 res.redirect('login')
             }
@@ -103,6 +103,7 @@ exports.LOGIN_LOGIC = async (req, res) => {
     try {
         const { id, pw } = req.body
         const userdata = await user_info.GET_USER_DATA_ID(id)
+        console.log(userdata)
         if (userdata) {
             const decode_pw = crypto.decoding(userdata.pw)
             if (pw === decode_pw) {
@@ -124,7 +125,7 @@ exports.LOGIN_LOGIC = async (req, res) => {
 
 exports.LOGOUT_LOGIC = async (req, res) => {
     try {
-        req.session.destory(() => { })
+        req.session.destroy(() => { })
         res.redirect('index')
     } catch (e) {
         if (e) throw e
@@ -134,9 +135,62 @@ exports.LOGOUT_LOGIC = async (req, res) => {
 exports.UPDATE_PAGE = async (req, res) => {
     try {
         const { UID } = req.session
-        const user_data = await user_info.GET_USER_DATA_OID(UID)
-        res.render('user_edit', { data : user_data })
+        if (!UID) {
+            res.write(`<script>alert('로그인 후 사용해주세요.');location.href = 'https://jh.jp.ngrok.io/basic/login';</script>`, 'utf8')
+        } else {
+            const user_data = await user_info.GET_USER_DATA_OID(UID)
+            res.render('user_edit', { data: user_data })
+        }
     } catch (e) {
         if (e) throw e
     }
+}
+
+exports.UPDATE_LOGIC = async (req, res) => {
+    try {
+        const { id, name, email, phone_number, address } = req.body
+        const p_num_reg = /^(\d{2,3})(\d{3,4})(\d{4})$/
+        const change_value = {}
+        const more_change_value = {}
+        const data = new Date()
+        const { UID } = req.session
+        if (name) {
+            change_value.name = name
+            if (phone_number) {
+                const p_num = phone_number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+                more_change_value.email = email
+                more_change_value.phone_number = p_num
+                more_change_value.address = address
+                more_change_value.reg_date = date
+
+                const userdata_insert = await user_info.UPDATE_USERDATA(id, change_value)
+                const more_data_insert = await more_user_info.UPDATE_USERDATA(id, more_change_value)
+
+                const user_data = await user_info.GET_USER_DATA_OID(UID)
+                res.render('user', { data: user_data })
+            } else {
+                more_change_value.email = email
+                more_change_value.phone_number = phone_number
+                more_change_value.address = address
+                more_change_value.reg_date = date
+
+                const userdata_insert = await user_info.UPDATE_USERDATA(id, change_value)
+                const more_data_insert = await more_user_info.UPDATE_USERDATA(id, more_change_value)
+
+                const user_data = await user_info.GET_USER_DATA_OID(UID)
+                res.render('user', { data: user_data })
+            }
+        } else {
+            res.write(`<script>alert('이름을 입력해주세요.');location.href = 'https://jh.jp.ngrok.io/basic/login';</script>`, 'utf8')
+        }
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.DELETE_LOGIC = async (req, res) => {
+    const { UID } = req.session
+    const delete_user = await user_info.DELETE_USER(UID)
+    const delete_user_more_data = await more_user_info.DELETE_USER(delete_user)
+    res.redirect('index')
 }
