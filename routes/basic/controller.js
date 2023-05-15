@@ -2,6 +2,7 @@ const user_info = require('../../models/mongodb_query/user_info')
 const more_user_info = require('../../models/mongodb_query/more_user_info')
 const crypto = require('../../modules/crypto')
 const arr = require('../../modules/chk_array')
+const AdminCall = require('../admin/controller')
 
 exports.INDEX_PAGE = (req, res) => {
     try {
@@ -74,7 +75,7 @@ exports.REG_LOGIC = async (req, res) => {
                 more_change_value.email = email
                 more_change_value.phone_number = phone_number
                 more_change_value.address = address
-                more_change_value.flag = 'a'
+                more_change_value.flag = 'u'
                 more_change_value.reg_date = data
 
                 const insert_data = await user_info.INSERT_USER_DATA(change_value)
@@ -103,15 +104,22 @@ exports.LOGIN_LOGIC = async (req, res) => {
     try {
         const { id, pw } = req.body
         const userdata = await user_info.GET_USER_DATA_ID(id)
-        console.log(userdata)
         if (userdata) {
             const decode_pw = crypto.decoding(userdata.pw)
             if (pw === decode_pw) {
-                const UID = userdata._id.toString()
-                req.session.UID = UID
-                req.session.save(() => {
-                    res.render('user', { data: userdata })
-                })
+                if (userdata.etc.flag === 'a') {
+                    const UID = userdata._id.toString()
+                    req.session.UID = UID
+                    req.session.save(() => {
+                        res.redirect('https://jh.jp.ngrok.io/admin/users?page=1')
+                    })
+                } else {
+                    const UID = userdata._id.toString()
+                    req.session.UID = UID
+                    req.session.save(() => {
+                        res.render('user', { data: userdata })
+                    })
+                }
             } else {
                 res.write(`<script>alert('비밀번호가 일치하지 않습니다.');history.back();</script>`, 'utf8')
             }
@@ -152,7 +160,7 @@ exports.UPDATE_LOGIC = async (req, res) => {
         const p_num_reg = /^(\d{2,3})(\d{3,4})(\d{4})$/
         const change_value = {}
         const more_change_value = {}
-        const data = new Date()
+        const date = new Date()
         const { UID } = req.session
         if (name) {
             change_value.name = name
