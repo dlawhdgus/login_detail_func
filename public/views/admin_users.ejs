@@ -5,14 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>user-Page</title>
-    <link rel="stylesheet" type="text/css" href="../css/user.css" />
+    <link rel="stylesheet" type="text/css" href="../css/admin_users.css" />
 </head>
 <body style="padding: 0; margin: 0;">
     <header><h2 id="title">MongoDB - Aggregate Practice</h2></header>
     <form id="logout_action" action="/basic/logout_logic" method="post"></form>
     <div id="logout_form"><a onclick="document.getElementById('logout_action').submit();">로그아웃</a><br></div>
-    
+    <% for(var i=0; i<data.length; i++) { %>
+        <fieldset>
+            <legend><%= data[i].id %></legend>
+            <div name="name">이 름 : <%= data[i].name %></div>
+            <div name="email">이메일 : <%= data[i].etc.email%></div>
+            <div name="phone_number">전화번호 : <%= data[i].etc.phone_number %></div>
+            <div name="address">주소 : <%= data[i].etc.address %></div>
+            <div name="reg_date">가입일자 : <%= data[i].reg_date %></div>
+        </fieldset>
+    <% } %>
     <form id="go_to_index" action="/basic/index" method="get"></form>
-    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a><br>
+    <div id="page_num">
+        <% for(var i = 1; i<page+1; i ++ ) { %>
+            <a id="paging_num" href="https://jh.jp.ngrok.io/admin/users?page=<%= i %>" id="#"><%= i %></a>
+        <% } %>
+    </div>
 </body>
 </html>

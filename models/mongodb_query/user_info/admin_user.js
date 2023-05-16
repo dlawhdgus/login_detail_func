@@ -24,12 +24,26 @@ exports.GET_USERS_DATA = async (page) => {
                 etc: { $arrayElemAt: ["$more_user_info", 0] }
               }
             },
+            {
+                $match: {
+                    "etc.flag" : "u"
+                }
+            },
             {$sort: { reg_date: 1} },
             {$skip: (page-1) * 5},
             {$limit: 5}
         ])
         const result = users_data.toArray()
         return result
+    } catch (e) {
+        if (e) throw e
+    }
+}
+
+exports.GET_USER_CNT = async () => {
+    try {
+        const cnt = await user_info.countDocuments()
+        return cnt
     } catch (e) {
         if (e) throw e
     }

@@ -6,6 +6,10 @@ const arr = require('../../modules/chk_array')
 exports.LOGIN_LOGIC = async (req, res) => {
     let { page } = req.query
     const users_data = await user_info.GET_USERS_DATA(page)
-    console.log(users_data)
-    res.render('admin_users')
+    const cnt = await user_info.GET_USER_CNT()
+    const count = parseInt((cnt-1)/5)
+    res.render('admin_users', { 
+        data : users_data,
+        page : count
+    })
 }
