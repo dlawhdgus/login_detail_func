@@ -3,8 +3,8 @@ const config = require('../../config.json')
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect(config.mongodb.CONNECT_STRING,{
-    dbName : 'db'
+mongoose.connect(config.mongodb.CONNECT_STRING, {
+    dbName: 'db'
 })
 
 const db = mongoose.connection;

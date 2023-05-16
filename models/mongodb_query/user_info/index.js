@@ -72,7 +72,7 @@ exports.GET_USER_DATA_ID = async (id) => {
 
 exports.GET_USER_DATA_OID = async (OID) => {
     try {
-        const user_id = await user_info.findOne({ _id: new ObjectId(OID) },{projection : { _id : 0, id : 1 }})
+        const user_id = await user_info.findOne({ _id: new ObjectId(OID) }, { projection: { _id: 0, id: 1 } })
         const pipeline = [
             {
                 $match: {
@@ -121,7 +121,7 @@ exports.GET_USER_DATA_OID = async (OID) => {
 
 exports.UPDATE_USERDATA = async (id, change_value) => {
     try {
-        const update_user = await user_info.updateOne({ id : `${id}`}, { $set : change_value})
+        const update_user = await user_info.updateOne({ id: `${id}` }, { $set: change_value })
     } catch (e) {
         if (e) throw e
     }
@@ -129,8 +129,8 @@ exports.UPDATE_USERDATA = async (id, change_value) => {
 
 exports.DELETE_USER = async (OID) => {
     try {
-        const delete_user = await user_info.deleteOne({_id : new ObjectId(OID)})
-        const user_id = await user_info.findOne({_id : new ObjectId(OID)},{projection : {_id : 0, id :1}})
+        const delete_user = await user_info.deleteOne({ _id: new ObjectId(OID) })
+        const user_id = await user_info.findOne({ _id: new ObjectId(OID) }, { projection: { _id: 0, id: 1 } })
         return user_id
     } catch (e) {
         if (e) throw e

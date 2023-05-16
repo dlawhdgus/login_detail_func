@@ -7,31 +7,31 @@ exports.GET_USERS_DATA = async (page) => {
     try {
         const users_data = user_info.aggregate([
             {
-              $lookup: {
-                from: "more_user_info",
-                localField: "id",                   //primary key
-                foreignField: "id",                 //foreign key
-                as: "more_user_info"
-              }
+                $lookup: {
+                    from: "more_user_info",
+                    localField: "id",                   //primary key
+                    foreignField: "id",                 //foreign key
+                    as: "more_user_info"
+                }
             },
             {
-              $project: {
-                _id: 1,
-                id: 1,
-                pw: 1,
-                name: 1,
-                reg_date: 1,
-                etc: { $arrayElemAt: ["$more_user_info", 0] }
-              }
+                $project: {
+                    _id: 1,
+                    id: 1,
+                    pw: 1,
+                    name: 1,
+                    reg_date: 1,
+                    etc: { $arrayElemAt: ["$more_user_info", 0] }
+                }
             },
             {
                 $match: {
-                    "etc.flag" : "u"
+                    "etc.flag": "u"
                 }
             },
-            {$sort: { reg_date: 1} },
-            {$skip: (page-1) * 5},
-            {$limit: 5}
+            { $sort: { reg_date: 1 } },
+            { $skip: (page - 1) * 5 },
+            { $limit: 5 }
         ])
         const result = users_data.toArray()
         return result
@@ -51,7 +51,7 @@ exports.GET_USER_CNT = async () => {
 
 exports.DELETE_USER = async (id) => {
     try {
-        const delete_user = await user_info.deleteOne({id : id})
+        const delete_user = await user_info.deleteOne({ id: id })
     } catch (e) {
         if (e) throw e
     }

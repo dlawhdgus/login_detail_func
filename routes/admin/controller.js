@@ -8,17 +8,17 @@ exports.LOGIN_LOGIC = async (req, res) => {
     let { page } = req.query
     const users_data = await admin_user_info.GET_USERS_DATA(page)
     const cnt = await admin_user_info.GET_USER_CNT()
-    const count = Math.ceil((cnt-1)/5)
-    res.render('admin_users', { 
-        data : users_data,
-        page : count
+    const count = Math.ceil((cnt - 1) / 5)
+    res.render('admin_users', {
+        data: users_data,
+        page: count
     })
 }
 
 exports.UPDATE_PAGE = async (req, res) => {
     const { id } = req.body
     const userdata = await user_info.GET_USER_DATA_ID(id)
-    res.render('admin_user_edit', { data : userdata})
+    res.render('admin_user_edit', { data: userdata })
 }
 
 exports.UPDATE_LOGIC = async (req, res) => {
@@ -48,7 +48,7 @@ exports.UPDATE_LOGIC = async (req, res) => {
 
             const userdata_insert = await user_info.UPDATE_USERDATA(id, change_value)
             const more_data_insert = await more_user_info.UPDATE_USERDATA(id, more_change_value)
-            
+
             res.redirect('https://jh.jp.ngrok.io/admin/users?page=1')
         }
     } else {
