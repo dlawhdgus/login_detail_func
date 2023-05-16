@@ -48,3 +48,11 @@ exports.GET_USER_CNT = async () => {
         if (e) throw e
     }
 }
+
+exports.DELETE_USER = async (id) => {
+    try {
+        const delete_user = await user_info.deleteOne({id : id})
+    } catch (e) {
+        if (e) throw e
+    }
+}

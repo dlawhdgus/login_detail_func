@@ -23,7 +23,7 @@
     <section>
         <article>
             <ul>
-                <form id="update_user_data" action="/basic/update_logic" method="post">
+                <form id="update_user_data" action="/admin/update_logic" method="post">
                     <li>: <%= data.id %><input type="hidden" value="<%= data.id %>" name="id"></li>
                     <li>: <input type="text" value="<%= data.name %>" name="name"></li>
                     <li>: <input type="email" value="<%= data.etc.email %>" name="email"></li>
@@ -34,6 +34,9 @@
         </article>
     </section>
     <form id="go_to_index" action="/basic/index" method="get"></form>
-    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a>
+    <form id="delete_user" action="/admin/delete_logic" method="post">
+        <input type="hidden" value="<%= data.id %>" name="id">
+    </form>
+    <a onclick="document.getElementById('go_to_index').submit();">홈으로</a> | <a onclick="document.getElementById('update_user_data').submit();">수정</a> | <a onclick="history.back();">뒤로가기</a> | <a onclick="document.getElementById('delete_user').submit();">회원 삭제</a>
 </body>
 </html>

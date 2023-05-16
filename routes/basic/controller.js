@@ -165,7 +165,7 @@ exports.UPDATE_LOGIC = async (req, res) => {
         if (name) {
             change_value.name = name
             if (phone_number) {
-                const p_num = phone_number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+                const p_num = phone_number.replace(p_num_reg, `$1-$2-$3`)
                 more_change_value.email = email
                 more_change_value.phone_number = p_num
                 more_change_value.address = address

@@ -19,6 +19,10 @@
             <div name="phone_number">전화번호 : <%= data[i].etc.phone_number %></div>
             <div name="address">주소 : <%= data[i].etc.address %></div>
             <div name="reg_date">가입일자 : <%= data[i].reg_date %></div>
+            <form id="update_user" action="/admin/update" method="post">
+                <input type="hidden" name="id" value="<%= data[i].id %>">
+                <button type="submit">수정</button>
+            </form>
         </fieldset>
     <% } %>
     <form id="go_to_index" action="/basic/index" method="get"></form>
