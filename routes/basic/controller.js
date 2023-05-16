@@ -45,48 +45,52 @@ exports.REG_LOGIC = async (req, res) => {
 
         // 순서 -> 아이디 중복 체크 -> 비번 암호화 -> 전화번호 '-' 넣기 -> 회원가입 -> 로그인 창으로 넘어가기(로그인 안됨)
         const Check_User = await user_info.CHECK_USER_ID(id)
-        if (!Check_User) {
-            const encoding_pw = crypto.encoding(pw)
-            change_value.id = id
-            change_value.pw = encoding_pw
-            change_value.name = name
-            change_value.reg_date = data
-            if (phone_number) {
-                const Check_Phone_number = p_num_reg.test(phone_number)
-                if (Check_Phone_number) {
-                    const p_num = phone_number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+        if(!id && !pw) {
+            res.write(`<script>alert('아이디와 패스워드를 입력해주세요.');history.back();</script>`, "utf8")
+        } else {
 
+            if (!Check_User) {
+                const encoding_pw = crypto.encoding(pw)
+                change_value.id = id
+                change_value.pw = encoding_pw
+                change_value.name = name
+                change_value.reg_date = data
+                if (phone_number) {
+                    const Check_Phone_number = p_num_reg.test(phone_number)
+                    if (Check_Phone_number) {
+                        const p_num = phone_number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+    
+                        more_change_value.id = id
+                        more_change_value.email = email
+                        more_change_value.phone_number = p_num
+                        more_change_value.address = address
+                        more_change_value.flag = 'u'
+                        more_change_value.reg_date = data
+    
+                        const insert_data = await user_info.INSERT_USER_DATA(change_value)
+                        const insert_more_data = await more_user_info.INSERT_USER_DATA(more_change_value)
+    
+                        res.redirect('login')
+                    } else {
+                        res.write(`<script>alert('전화번호 형식이 틀렸습니다.');history.back();</script>`, "utf8")
+                    }
+                } else {
                     more_change_value.id = id
                     more_change_value.email = email
-                    more_change_value.phone_number = p_num
+                    more_change_value.phone_number = phone_number
                     more_change_value.address = address
                     more_change_value.flag = 'u'
                     more_change_value.reg_date = data
-
+    
                     const insert_data = await user_info.INSERT_USER_DATA(change_value)
                     const insert_more_data = await more_user_info.INSERT_USER_DATA(more_change_value)
-
+    
                     res.redirect('login')
-                } else {
-                    res.write(`<script>alert('전화번호 형식이 틀렸습니다.');history.back();</script>`, "utf8")
                 }
             } else {
-                more_change_value.id = id
-                more_change_value.email = email
-                more_change_value.phone_number = phone_number
-                more_change_value.address = address
-                more_change_value.flag = 'u'
-                more_change_value.reg_date = data
-
-                const insert_data = await user_info.INSERT_USER_DATA(change_value)
-                const insert_more_data = await more_user_info.INSERT_USER_DATA(more_change_value)
-
-                res.redirect('login')
+                res.write(`<script>alert('아이디가 중복되었습니다.');history.back();</script>`, "utf8")
             }
-        } else {
-            res.write(`<script>alert('아이디가 중복되었습니다.');history.back();</script>`, "utf8")
         }
-
     } catch (e) {
         if (e) throw e
     }

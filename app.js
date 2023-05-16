@@ -6,6 +6,7 @@ const bodyParser          = require('body-parser')
 const session             = require('express-session')
 const FileStore           = require('session-file-store')(session)
 const { mongodb_connect } = require('./models/mongodb_connect')
+const favicon             = require('serve-favicon')
 
 app.use(session({
     secret: 'luwygdfo',
@@ -19,6 +20,7 @@ app.use(session({
 
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
+app.use(favicon(__dirname + '/public/favicon.ico'))
 app.use(express.urlencoded({ extended: true }))
 app.use('/', routes)
 
